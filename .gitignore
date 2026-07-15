@@ -1,0 +1,16 @@
+.cpcache/
+.nrepl-port
+target/
+.lsp/
+node_modules/
+*.swp
+*.swo
+*~
+.DS_Store
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.c9/
+*.log
