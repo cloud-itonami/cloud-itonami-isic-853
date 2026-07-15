@@ -7,8 +7,8 @@
   3. Scope exclusion -- academic grading, admissions, academic standing,
      degree conferral, disciplinary action, safety-authority overrides
      are blocked (except legitimate :flag-safety-concern escalation)"
-  (:require [highereds.store :as store]
-            [highereds.operation :as op]))
+  (:require [clojure.string :as str]
+            [highereds.store :as store]))
 
 ;; ----------------------------- Violations Detection -------------------------
 
@@ -37,27 +37,31 @@
     [(str "Effect must be :propose, got: " (:effect proposal))]))
 
 (defn scope-exclusion-violations
-  "Permanent scope boundaries. Returns vector of violation strings."
+  "Permanent scope boundaries. Returns vector of violation strings.
+  Note: flag-safety-concern is never self-blocked; it always escalates."
   [proposal]
-  (let [content (str (:op proposal) " " (:description proposal))]
-    (reduce
-      (fn [violations pattern]
-        (if (re-find (re-pattern (str "(?i)" pattern)) content)
-          (conj violations (str "Scope exclusion: " pattern))
-          violations))
-      []
-      ["grading"
-       "assessment"
-       "academic.?standing"
-       "probation"
-       "expulsion"
-       "admissions?.*decision"
-       "degree.*conferral"
-       "discipline.*action"
-       "safety.*authority.*override"
-       "law.?enforcement"
-       "CPS"
-       "mandatory.*report.*override"])))
+  ;; Never block :flag-safety-concern operations; they always escalate
+  (if (= (:op proposal) :flag-safety-concern)
+    []
+    (let [content (str (:op proposal) " " (:description proposal))]
+      (reduce
+        (fn [violations pattern]
+          (if (re-find (re-pattern (str "(?i)" pattern)) content)
+            (conj violations (str "Scope exclusion: " pattern))
+            violations))
+        []
+        ["grading"
+         "assessment"
+         "academic.?standing"
+         "probation"
+         "expulsion"
+         "admissions?.*decision"
+         "degree.*conferral"
+         "disciplin"
+         "safety.*authority.*override"
+         "law.?enforcement"
+         "CPS"
+         "mandatory.*report.*override"]))))
 
 (defn all-violations
   "Collect all violations for a proposal. Hard checks fail fast; failures
@@ -94,4 +98,4 @@
         :else :commit)
       (if valid?
         "Proposal passed all hard checks"
-        (str "Violations: " (clojure.string/join "; " violations))))))
+        (str "Violations: " (str/join "; " violations))))))

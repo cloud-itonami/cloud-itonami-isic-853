@@ -1,6 +1,7 @@
 (ns highereds.sim
   "Demo/test harness for the higher-education actor."
-  (:require [highereds.store :as store]
+  (:require [clojure.string :as str]
+            [highereds.store :as store]
             [highereds.advisor :as advisor]
             [highereds.governor :as governor]
             [highereds.phase :as phase]
@@ -27,7 +28,7 @@
       (println (str "  Governor decision: " (:action decision)))
       (println (str "  Valid: " (:valid? decision)))
       (if (seq (:violations decision))
-        (println (str "  Violations: " (clojure.string/join "; " (:violations decision)))))
+        (println (str "  Violations: " (str/join "; " (:violations decision)))))
       (newline))
 
     ;; Scenario 2: Safety concern (always escalates)
@@ -87,5 +88,5 @@
 
 ;; Entry point
 (defn -main
-  [& args]
+  [& _args]
   (run-demo))

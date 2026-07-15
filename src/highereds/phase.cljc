@@ -41,7 +41,7 @@
 (defn requires-approval?
   "Returns true if the proposal requires human approval before commit
   (Phase 1–2). Phase 3+ auto-commits clean proposals."
-  [phase op]
+  [phase _op]
   (case phase
     :phase-0 true
     :phase-1 true

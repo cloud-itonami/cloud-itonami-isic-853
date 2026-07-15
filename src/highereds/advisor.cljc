@@ -6,11 +6,11 @@
 (defn mock-advisor
   "Mock advisor for demo/testing.
   Returns a proposal shaped for the given operation and student."
-  [store student-id op phase]
+  [_store student-id op phase]
   {:student-id student-id
    :op op
    :effect :propose
-   :created-at (java.time.Instant/now)
+   :created-at #?(:clj (java.time.Instant/now) :cljs (js/Date.))
    :reasoning "Mock advisor proposal for demo"
    :description (case op
                   :schedule-enrollment-appointment
