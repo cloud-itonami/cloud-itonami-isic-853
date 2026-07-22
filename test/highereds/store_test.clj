@@ -55,3 +55,44 @@
         students (store/all-students s)]
     (t/is (empty? students))
     (t/is (nil? (store/student s "any-id")))))
+
+;; ----------------------------- backend parity (MemStore vs DatomicStore) -----------------------------
+;; Proves `DatomicStore` satisfies the SAME `Store` protocol contract as `MemStore` --
+;; the same pattern `cloud-itonami-isic-7810`'s `employmentops.store-contract-test` uses.
+
+(defn- backends []
+  [["MemStore" (store/seed-db)] ["DatomicStore" (store/datomic-seed-db)]])
+
+(t/deftest read-parity
+  (doseq [[label s] (backends)]
+    (t/testing label
+      (t/is (= "Aiko Yamada" (:name (store/student s "student-1"))))
+      (t/is (true? (:registered? (store/student s "student-1"))))
+      (t/is (true? (:verified? (store/student s "student-1"))))
+      (t/is (false? (:verified? (store/student s "student-3"))) "student-3 is registered but unverified")
+      (t/is (nil? (store/student s "no-such-student")))
+      (t/is (= ["student-1" "student-2" "student-3"] (mapv :student-id (store/all-students s))))
+      (t/is (= [] (store/ledger s)))
+      (t/is (= [] (store/coordination-log s))))))
+
+(t/deftest write-and-ledger-parity
+  (doseq [[label s] (backends)]
+    (t/testing label
+      (t/testing "commit-record! appends to coordination-log"
+        (store/commit-record! s {:op :log-attendance-note :student-id "student-1" :value {:meal "lunch"}})
+        (t/is (= 1 (count (store/coordination-log s))))
+        (t/is (= "student-1" (:student-id (first (store/coordination-log s))))))
+      (t/testing "append-ledger! is append-only and order-preserving"
+        (store/append-ledger! s {:op :a :disposition :commit})
+        (store/append-ledger! s {:op :b :disposition :hold})
+        (t/is (= [:commit :hold] (mapv :disposition (store/ledger s))))))))
+
+(t/deftest datomic-empty-store-is-usable
+  (let [s (store/datomic-store)]
+    (t/is (nil? (store/student s "nope")))
+    (t/is (= [] (store/all-students s)))
+    (t/is (= [] (store/ledger s)))
+    (t/is (= [] (store/coordination-log s)))
+    (store/with-students s {"x" {:student-id "x" :name "New Student" :enrollment-status "active"
+                                 :registered? true :verified? false}})
+    (t/is (= "New Student" (:name (store/student s "x"))))))
