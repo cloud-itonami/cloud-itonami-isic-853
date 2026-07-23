@@ -76,11 +76,16 @@ flagships (6399/6310/7810/5820) — that range has no evidenced relationship
 to higher-ed advising-office coordination pricing, and this market's own
 real comps price meaningfully lower than K-12's.
 
-**Subscribe**: a live Stripe Payment Link for the Managed Advising Ops
-(Starter) tier is pending — blocked this session on a 1Password CLI
-re-authentication needed to create the live Stripe object, not yet
-available. This section will be updated with the real link once created.
-**No department or institution has claimed or subscribed to this tier.**
+**Subscribe (2026-07-23)**: a live Stripe Payment Link for the Managed
+Advising Ops (Starter) tier (¥20,000/月 flat) is available now —
+[**subscribe to Managed Advising Ops — Starter**](https://buy.stripe.com/4gM4gy4Wfe08aGI5c3bMQ0n).
+This is a no-code Stripe-hosted checkout; nothing in this repo's actor code
+changed. After subscribing, contact gftdcojp via an [operator-interest
+issue](https://github.com/cloud-itonami/cloud-itonami-isic-853/issues/new?template=operator-interest.yml)
+to arrange managed-tenant setup (manual fulfillment today, no automated
+onboarding yet). **No department or institution has claimed or subscribed
+to this tier yet — this is a live, working checkout with zero paid
+tenants, not a claim of existing revenue.**
 
 ## Unit Economics (worked example, illustrative)
 
