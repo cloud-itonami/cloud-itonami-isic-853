@@ -8,10 +8,16 @@
     (t/is (not (phase/operation-allowed? :phase-0 :schedule-enrollment-appointment)))))
 
 (t/deftest phase-1-enrollment-only
+  ;; :flag-safety-concern is deliberately allowed from phase-1 onward
+  ;; (see phase.cljc's own fallback intent + isic-855's identical fix) --
+  ;; a safety/wellbeing concern must always be raisable once the actor is
+  ;; live, not gated the same way ordinary coordination ops are; it just
+  ;; never auto-commits (see requires-approval? / :flag-safety-concern
+  ;; always resolves to :escalate in governor/govern).
   (let [ops (phase/allowed-operations :phase-1)]
     (t/is (contains? ops :schedule-enrollment-appointment))
     (t/is (not (contains? ops :coordinate-facility-booking)))
-    (t/is (not (contains? ops :flag-safety-concern)))))
+    (t/is (contains? ops :flag-safety-concern))))
 
 (t/deftest phase-2-multiple-ops
   (let [ops (phase/allowed-operations :phase-2)]
@@ -19,7 +25,7 @@
     (t/is (contains? ops :coordinate-facility-booking))
     (t/is (contains? ops :coordinate-supply-request))
     (t/is (contains? ops :schedule-staff-shift-proposal))
-    (t/is (not (contains? ops :flag-safety-concern)))))
+    (t/is (contains? ops :flag-safety-concern))))
 
 (t/deftest phase-3-all-ops
   (let [ops (phase/allowed-operations :phase-3)]
