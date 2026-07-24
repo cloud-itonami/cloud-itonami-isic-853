@@ -20,12 +20,14 @@
   "Returns set of allowed operations in the current phase."
   [phase]
   (case phase
-    :phase-0 #{}
-    :phase-1 #{:schedule-enrollment-appointment}
+    :phase-0 #{}  ; read-only -- including safety flagging; phase 0 means no proposals at all
+    :phase-1 #{:schedule-enrollment-appointment
+               :flag-safety-concern}
     :phase-2 #{:schedule-enrollment-appointment
                :coordinate-facility-booking
                :coordinate-supply-request
-               :schedule-staff-shift-proposal}
+               :schedule-staff-shift-proposal
+               :flag-safety-concern}
     :phase-3 #{:schedule-enrollment-appointment
                :coordinate-facility-booking
                :coordinate-supply-request
