@@ -7,7 +7,7 @@
   3. Scope exclusion -- academic grading, admissions, academic standing,
      degree conferral, disciplinary action, safety-authority overrides
      are blocked (except legitimate :flag-safety-concern escalation)"
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [highereds.store :as store]))
 
 ;; ----------------------------- Violations Detection -------------------------
