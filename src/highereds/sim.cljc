@@ -1,6 +1,6 @@
 (ns highereds.sim
   "Demo/test harness for the higher-education actor."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [highereds.store :as store]
             [highereds.advisor :as advisor]
             [highereds.governor :as governor]
@@ -73,7 +73,7 @@
       (let [ops (phase/allowed-operations p)]
         (println (str "  " (phase/phase-description p)))
         (if (seq ops)
-          (println (str "    Allowed ops: " (clojure.string/join ", " (map name ops))))
+          (println (str "    Allowed ops: " (str/join ", " (map name ops))))
           (println "    No operations allowed (read-only)"))))
     (newline)
 
