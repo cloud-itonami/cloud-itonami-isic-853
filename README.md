@@ -37,9 +37,9 @@ clojure -M:run
 
 ## Test suite
 
-- `test/highereds/governor_test.clj` — unit tests of governor hard checks and scope exclusion
-- `test/highereds/advisor_test.clj` — advisor proposal shape and consistency
-- `test/highereds/phase_test.clj` — rollout phase logic
+- `test/highereds/governor_test.kotoba` — unit tests of governor hard checks and scope exclusion
+- `test/highereds/advisor_test.kotoba` — advisor proposal shape and consistency
+- `test/highereds/phase_test.kotoba` — rollout phase logic
 - `test/highereds/governor_contract_test.clj` — full graph integration, audit trail
 - `test/highereds/store_contract_test.clj` — Store protocol and MemStore implementation
 
