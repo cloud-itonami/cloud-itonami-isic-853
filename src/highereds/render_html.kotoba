@@ -24,7 +24,7 @@
   `execute-proposal!` can produce: committed, escalated-then-approved,
   HARD-held (unverified student), and rejected (phase disallows the op).
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [jp-go-dds.skin]
             [kotoba.lang.text :as str]
@@ -120,7 +120,7 @@
      "<main>\n"
      "  <section class=\"card\">\n"
      "    <h2>Students</h2>\n"
-     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>highereds.store</code> via <code>highereds.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly.</p>\n"
+     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>highereds.store</code> via <code>highereds.render-html</code> (<code>kbb -M:dev:render-html</code>), regenerated nightly.</p>\n"
      "    <table>\n"
      "      <thead><tr><th>Student</th><th>Name</th><th>Enrollment status</th><th>Roster status</th><th>Last coordination status</th></tr></thead>\n"
      "      <tbody>\n"
